@@ -21,19 +21,19 @@ public class FlipkartTest3 {
 				temp=temp+arr[curr];
 				result.add(arr[curr]);
 				curr=curr+1;
-                i=i+1;
+                		i=i+1;
 			} else if(temp==k){
-    		    System.out.println(result);
-                result.clear();
-    			temp=0;
-                curr=curr-i+1;
-                i=0;
+    		    		System.out.println(result);
+                		result.clear();
+    				temp=0;
+                		curr=curr-i+1;
+                		i=0;
 			}
-            else {
+            		else {
 				result.clear();
 				temp=0;
-                curr=curr-i+1;
-                i=0;
+	                	curr=curr-i+1;
+                		i=0;
 			}
 		}
 	}
