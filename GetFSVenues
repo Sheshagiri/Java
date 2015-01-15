@@ -1,0 +1,52 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+import org.json.simple.parser.JSONParser;
+
+public class GetFSVenues {
+	private static String readUrl(String urlString) throws Exception {
+		BufferedReader reader = null;
+		try {
+			URL url = new URL(urlString);
+			reader = new BufferedReader(new InputStreamReader(url.openStream()));
+			StringBuffer buffer = new StringBuffer();
+			int read;
+			char[] chars = new char[1024];
+			while ((read = reader.read(chars)) != -1)
+				buffer.append(chars, 0, read);
+
+			return buffer.toString();
+		} finally {
+			if (reader != null)
+				reader.close();
+		}
+	}
+
+	public static void main(String[] args) {
+		String url = "http://maps.googleapis.com/maps/api/geocode/json?address=hyderabad,india";
+		try {
+			String data = readUrl(url);
+			JSONParser parser = new JSONParser();
+
+			JSONObject ll = (JSONObject) parser.parse(data);
+			JSONArray results = (JSONArray) ll.get("results");
+			// System.out.println(results.get(0));
+			JSONObject geo = (JSONObject) results.get(0);
+			JSONObject location = (JSONObject) ((JSONObject) geo
+					.get("geometry")).get("location");
+			String lng = JSONValue.toJSONString(location.get("lng"));
+			String lat = JSONValue.toJSONString(location.get("lat"));
+			String fs = "https://api.foursquare.com/v2/venues/search?ll="+lat+","+lng+"&oauth_token=41KL0OBEZBINONWZY3ZEOICWNFILSDNN0LLQEWD5X5EKGN4D&v=20150115";
+			System.out.println(fs);
+			//System.out
+			//.println(readUrl("https://api.foursquare.com/v2/venues/search?ll=17.385044,78.486671&oauth_token=41KL0OBEZBINONWZY3ZEOICWNFILSDNN0LLQEWD5X5EKGN4D&v=20150115"));
+			System.out.println(readUrl(fs));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
